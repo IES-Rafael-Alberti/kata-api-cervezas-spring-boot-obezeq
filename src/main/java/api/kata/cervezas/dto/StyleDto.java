@@ -9,7 +9,7 @@ public class StyleDto {
     private Integer id;
 
     @NotBlank(message = "Style name is required")
-    private String name;
+    private String styleName;
 
     private Integer categoryId;
 

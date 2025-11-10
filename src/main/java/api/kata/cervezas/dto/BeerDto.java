@@ -13,13 +13,13 @@ public class BeerDto {
     private String name;
 
     @PositiveOrZero(message = "ABV must be non-negative")
-    private Double abv;
+    private Float abv;
 
     @PositiveOrZero(message = "IBU must be non-negative")
-    private Double ibu;
+    private Float ibu;
 
     @PositiveOrZero(message = "SRM must be non-negative")
-    private Double srm;
+    private Float srm;
 
     private Integer upc;
 

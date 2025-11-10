@@ -1,6 +1,6 @@
 package api.kata.cervezas.web;
 
-import api.kata.cervezas.model.Beer;
+import api.kata.cervezas.dto.BeerDto;
 import api.kata.cervezas.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class BeerController {
     private BeerService beerService;
 
     @GetMapping("/beers")
-    public ResponseEntity<List<Beer>> beers(){
-        List<Beer> beers = beerService.findAll();
+    public ResponseEntity<List<BeerDto>> beers(){
+        List<BeerDto> beers = beerService.findAll();
         return ResponseEntity.ok(beers);
     }
 

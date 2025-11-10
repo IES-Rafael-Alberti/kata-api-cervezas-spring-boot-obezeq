@@ -9,6 +9,6 @@ public class CategoryDto {
     private Integer id;
 
     @NotBlank(message = "Category name is required")
-    private String name;
+    private String catName;
 
 }
