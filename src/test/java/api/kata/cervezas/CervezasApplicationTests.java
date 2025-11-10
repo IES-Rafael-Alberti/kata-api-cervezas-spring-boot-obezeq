@@ -1,0 +1,13 @@
+package api.kata.cervezas;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CervezasApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
