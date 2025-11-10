@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Beer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     // MUCHAS cervezas pueden estar en la MISMA brewery
     // UNA cerveza solo tiene UNA cervezeria
