@@ -26,8 +26,11 @@ public class Beer {
     @Column(name = "cat_id", nullable = false)
     private Integer catId;
 
-    @Column(name="style_id", nullable = false)
-    private Integer styleId;
+    // MUCHAS cervezas pueden tener el MISMO estilo
+    // UNA cerveza solo tiene UN style
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="style_id", nullable = false)
+    private Style style;
 
     @Column(nullable = false)
     private Float abv;
