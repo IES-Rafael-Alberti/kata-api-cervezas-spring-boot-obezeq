@@ -17,8 +17,11 @@ public class Beer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "brewery_id", nullable = false)
-    private Long breweryId;
+    // MUCHAS cervezas pueden estar en la MISMA brewery
+    // UNA cerveza solo tiene UNA cervezeria
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brewery_id", nullable = false)
+    private Brewery brewery;
 
     @Column(nullable = false)
     private String name;
