@@ -18,8 +18,9 @@ public class Style {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cat_id", nullable = false)
-    private Integer catId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id", nullable = false)
+    private Category cat;
 
     @Column(name = "style_name", nullable = false)
     private String styleName;

@@ -23,8 +23,11 @@ public class Beer {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "cat_id", nullable = false)
-    private Integer catId;
+    // MUCHAS cervezas pueden tener la MISMA categoria
+    // UNA cerveza solo tiene UNA CATEGORIA
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cat_id", nullable = false)
+    private Category cat;
 
     // MUCHAS cervezas pueden tener el MISMO estilo
     // UNA cerveza solo tiene UN style
