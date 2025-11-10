@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -25,7 +24,7 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/categorie/{id}")
     public ResponseEntity<CategoryDto> getCategoryById(@PathVariable Integer id) {
         CategoryDto category = categoryService.findById(id);
         if (category == null) {

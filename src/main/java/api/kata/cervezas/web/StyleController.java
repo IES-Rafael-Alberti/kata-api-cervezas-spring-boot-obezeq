@@ -1,7 +1,6 @@
 package api.kata.cervezas.web;
 
 import api.kata.cervezas.dto.StyleDto;
-import api.kata.cervezas.model.Style;
 import api.kata.cervezas.service.StyleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +20,13 @@ public class StyleController {
 
     @GetMapping("/styles")
     public ResponseEntity<List<StyleDto>> getAllStyles() {
-        List<StyleDto> styles = styleService.getAllStyles();
+        List<StyleDto> styles = styleService.findAll();
         return ResponseEntity.ok(styles);
     }
 
     @GetMapping("/style/{id}")
     public ResponseEntity<StyleDto> getStyleById(@PathVariable Integer id) {
-        StyleDto style = styleService.getStyleById(id);
+        StyleDto style = styleService.findById(id);
         if (style == null) {
             return ResponseEntity.notFound().build();
         }

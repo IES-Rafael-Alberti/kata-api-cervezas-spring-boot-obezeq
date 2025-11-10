@@ -19,14 +19,14 @@ public class StyleService {
     @Autowired
     private StyleMapper styleMapper;
 
-    public List<StyleDto> getAllStyles() {
+    public List<StyleDto> findAll() {
         return styleRepository.findAll()
                 .stream()
                 .map(styleMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public StyleDto getStyleById(Integer id) {
+    public StyleDto findById(Integer id) {
         return styleRepository.findById(id)
                 .map(styleMapper::toDto)
                 .orElse(null);

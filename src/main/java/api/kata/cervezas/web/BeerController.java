@@ -1,7 +1,6 @@
 package api.kata.cervezas.web;
 
 import api.kata.cervezas.dto.BeerDto;
-import api.kata.cervezas.model.Beer;
 import api.kata.cervezas.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,7 @@ public class BeerController {
     private BeerService beerService;
 
     @GetMapping("/beers")
-    public ResponseEntity<List<BeerDto>> getAllBears(){
+    public ResponseEntity<List<BeerDto>> getAllBeers(){
         List<BeerDto> beers = beerService.findAll();
         return ResponseEntity.ok(beers);
     }
@@ -57,12 +56,12 @@ public class BeerController {
     }
 
     @DeleteMapping("/beer/{id}")
-    public ResponseEntity<BeerDto> deleteBeer(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteBeer(@PathVariable Integer id) {
         boolean deleted = beerService.delete(id);
         if (!deleted) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/echo/{echo}")
