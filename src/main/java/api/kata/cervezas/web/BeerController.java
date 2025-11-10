@@ -1,13 +1,12 @@
 package api.kata.cervezas.web;
 
 import api.kata.cervezas.dto.BeerDto;
+import api.kata.cervezas.model.Beer;
 import api.kata.cervezas.service.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,19 +18,51 @@ public class BeerController {
     private BeerService beerService;
 
     @GetMapping("/beers")
-    public ResponseEntity<List<BeerDto>> beers(){
+    public ResponseEntity<List<BeerDto>> getAllBears(){
         List<BeerDto> beers = beerService.findAll();
         return ResponseEntity.ok(beers);
     }
 
-    @GetMapping("/beer")
-    public String beer() {
-        return "beer";
+    @GetMapping("/beer/{id}")
+    public ResponseEntity<BeerDto> getBeerById(@PathVariable Integer id) {
+        BeerDto beer = beerService.findById(id);
+        if (beer == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(beer);
     }
 
-    @GetMapping("/beer/{id}")
-    public String getBeerById(@PathVariable int id) {
-        return "beer with id: " + id;
+    @PostMapping("/beer")
+    public ResponseEntity<BeerDto> createBeer(@RequestBody BeerDto beerDto) {
+        BeerDto createdBeer = beerService.create(beerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdBeer);
+    }
+
+    @PutMapping("/beer/{id}")
+    public ResponseEntity<BeerDto> updateBeer(@PathVariable Integer id, @RequestBody BeerDto beerDto) {
+        BeerDto updatedBeer = beerService.update(id, beerDto);
+        if (updatedBeer == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedBeer);
+    }
+
+    @PatchMapping("/beer/{id}")
+    public ResponseEntity<BeerDto> partialUpdateBeer(@PathVariable Integer id, @RequestBody BeerDto beerDto) {
+        BeerDto partialUpdatedBeer = beerService.partialUpdate(id, beerDto);
+        if (partialUpdatedBeer == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(partialUpdatedBeer);
+    }
+
+    @DeleteMapping("/beer/{id}")
+    public ResponseEntity<BeerDto> deleteBeer(@PathVariable Integer id) {
+        boolean deleted = beerService.delete(id);
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/echo/{echo}")
