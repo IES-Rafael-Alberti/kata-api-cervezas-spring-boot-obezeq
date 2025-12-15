@@ -1,0 +1,284 @@
+### Beer API - HTTP Request Collection
+### Use with VS Code REST Client extension or IntelliJ HTTP Client
+
+### Variables
+@baseUrl = http://localhost:8080/api/v1
+@beerId = 1
+@newBeerId = 5915
+
+###############################################
+# BEER ENDPOINTS
+###############################################
+
+### 1. Get all beers (paginated)
+GET {{baseUrl}}/beers?page=0&size=10&sort=name,asc
+Accept: application/json
+
+### 2. Get all beers (page 2)
+GET {{baseUrl}}/beers?page=1&size=10
+Accept: application/json
+
+### 3. Count beers (HEAD request)
+HEAD {{baseUrl}}/beers
+
+### 4. Get beer by ID
+GET {{baseUrl}}/beer/{{beerId}}
+Accept: application/json
+
+### 5. Get beer by ID (not found - 404)
+GET {{baseUrl}}/beer/99999
+Accept: application/json
+
+### 6. Search beers by name
+GET {{baseUrl}}/beers/search?name=ipa
+Accept: application/json
+
+### 7. Search beers by name and ABV range
+GET {{baseUrl}}/beers/search?name=ipa&minAbv=5.0&maxAbv=7.0
+Accept: application/json
+
+### 8. Search beers by style ID
+GET {{baseUrl}}/beers/search?styleId=10
+Accept: application/json
+
+### 9. Search beers by IBU range
+GET {{baseUrl}}/beers/search?minIbu=50.0&maxIbu=100.0
+Accept: application/json
+
+### 10. Search beers (combined filters)
+GET {{baseUrl}}/beers/search?name=ale&minAbv=4.0&maxAbv=6.0&page=0&size=20
+Accept: application/json
+
+### 11. Create new beer
+POST {{baseUrl}}/beer
+Content-Type: application/json
+
+{
+  "name": "Test IPA",
+  "abv": 6.5,
+  "ibu": 65.0,
+  "srm": 12.0,
+  "upc": 12345,
+  "filepath": "",
+  "descript": "A test IPA created via API",
+  "breweryId": 1,
+  "categoryId": 1,
+  "styleId": 10
+}
+
+### 12. Create beer with validation errors (missing required fields)
+POST {{baseUrl}}/beer
+Content-Type: application/json
+
+{
+  "name": "",
+  "abv": -5.0
+}
+
+### 13. Create beer with invalid brewery ID (404 error)
+POST {{baseUrl}}/beer
+Content-Type: application/json
+
+{
+  "name": "Test Beer",
+  "abv": 5.0,
+  "ibu": 50.0,
+  "srm": 10.0,
+  "upc": 0,
+  "filepath": "",
+  "descript": "Test",
+  "breweryId": 99999,
+  "categoryId": 1,
+  "styleId": 10
+}
+
+### 14. Update beer (full update - PUT)
+PUT {{baseUrl}}/beer/{{beerId}}
+Content-Type: application/json
+
+{
+  "name": "Updated Beer Name",
+  "abv": 7.0,
+  "ibu": 70.0,
+  "srm": 13.0,
+  "upc": 54321,
+  "filepath": "",
+  "descript": "Updated description",
+  "breweryId": 1,
+  "categoryId": 1,
+  "styleId": 10
+}
+
+### 15. Partial update beer (PATCH)
+PATCH {{baseUrl}}/beer/{{beerId}}
+Content-Type: application/json
+
+{
+  "name": "Partially Updated Name",
+  "abv": 7.5
+}
+
+### 16. Partial update - change brewery
+PATCH {{baseUrl}}/beer/{{beerId}}
+Content-Type: application/json
+
+{
+  "breweryId": 2
+}
+
+### 17. Upload beer image (multipart/form-data)
+# Note: Replace with actual file path
+# POST {{baseUrl}}/beer/{{beerId}}/image
+# Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+#
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="file"; filename="beer.jpg"
+# Content-Type: image/jpeg
+#
+# < ./path/to/beer.jpg
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### 18. Delete beer
+DELETE {{baseUrl}}/beer/{{newBeerId}}
+
+### 19. Delete beer (not found - 404)
+DELETE {{baseUrl}}/beer/99999
+
+###############################################
+# BREWERY ENDPOINTS
+###############################################
+
+### 20. Get all breweries
+GET {{baseUrl}}/breweries
+Accept: application/json
+
+### 21. Get brewery by ID
+GET {{baseUrl}}/brewerie/1
+Accept: application/json
+
+### 22. Get brewery by ID (not found)
+GET {{baseUrl}}/brewerie/99999
+Accept: application/json
+
+###############################################
+# CATEGORY ENDPOINTS
+###############################################
+
+### 23. Get all categories
+GET {{baseUrl}}/categories
+Accept: application/json
+
+### 24. Get category by ID
+GET {{baseUrl}}/categorie/1
+Accept: application/json
+
+### 25. Get category by ID (not found)
+GET {{baseUrl}}/categorie/99999
+Accept: application/json
+
+###############################################
+# STYLE ENDPOINTS
+###############################################
+
+### 26. Get all styles
+GET {{baseUrl}}/styles
+Accept: application/json
+
+### 27. Get style by ID
+GET {{baseUrl}}/style/1
+Accept: application/json
+
+### 28. Get style by ID (not found)
+GET {{baseUrl}}/style/99999
+Accept: application/json
+
+###############################################
+# TEST WORKFLOW: CREATE, UPDATE, DELETE
+###############################################
+
+### Step 1: Create a new beer
+POST {{baseUrl}}/beer
+Content-Type: application/json
+
+{
+  "name": "Workflow Test IPA",
+  "abv": 6.0,
+  "ibu": 60.0,
+  "srm": 11.0,
+  "upc": 11111,
+  "filepath": "",
+  "descript": "Testing full workflow",
+  "breweryId": 1,
+  "categoryId": 1,
+  "styleId": 10
+}
+
+### Step 2: Get the created beer (use ID from Step 1 response)
+# GET {{baseUrl}}/beer/{ID_FROM_STEP_1}
+
+### Step 3: Update the beer
+# PATCH {{baseUrl}}/beer/{ID_FROM_STEP_1}
+# Content-Type: application/json
+#
+# {
+#   "name": "Workflow Test IPA - Updated",
+#   "abv": 6.5
+# }
+
+### Step 4: Delete the beer
+# DELETE {{baseUrl}}/beer/{ID_FROM_STEP_1}
+
+###############################################
+# EDGE CASES AND ERROR SCENARIOS
+###############################################
+
+### Invalid pagination parameters
+GET {{baseUrl}}/beers?page=-1&size=0
+Accept: application/json
+
+### Very large page size
+GET {{baseUrl}}/beers?page=0&size=1000
+Accept: application/json
+
+### Invalid sort parameter
+GET {{baseUrl}}/beers?sort=invalidField,asc
+Accept: application/json
+
+### Search with empty filters (should return all)
+GET {{baseUrl}}/beers/search
+Accept: application/json
+
+### Create beer with negative values (validation error)
+POST {{baseUrl}}/beer
+Content-Type: application/json
+
+{
+  "name": "Invalid Beer",
+  "abv": -10.0,
+  "ibu": -5.0,
+  "srm": -1.0,
+  "upc": 0,
+  "filepath": "",
+  "descript": "This should fail validation",
+  "breweryId": -1,
+  "categoryId": -1,
+  "styleId": -1
+}
+
+###############################################
+# UTILITY / TESTING
+###############################################
+
+### Echo endpoint (for testing)
+GET {{baseUrl}}/echo/hello-world
+
+###############################################
+# SWAGGER / OPENAPI
+###############################################
+
+### Get OpenAPI JSON specification
+GET http://localhost:8080/api-docs
+Accept: application/json
+
+### Access Swagger UI in browser
+# Open: http://localhost:8080/swagger-ui.html
